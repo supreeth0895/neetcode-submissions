@@ -1,49 +1,40 @@
-from typing import List
-
+#SUPREETH
 class Solution:
-    def findItinerary(self, tickets: List[List[str]]) -> List[str]:
-        answer = []
-        found_path = False
+    def minCostConnectPoints(self, points: List[List[int]]) -> int:
+        adj = {}
+        for point1 in points:
+            for point2 in points:
+                if point1 != point2: 
+                    if tuple(point1) in adj:
+                        adj[tuple(point1)].append(tuple(point2))
+                    else:
+                        adj[tuple(point1)] = [tuple(point2)]
 
-        my_map = {}
-        edge_count = {}
-        
-        for src, dst in tickets:
-            if src not in my_map:
-                my_map[src] = []
-            my_map[src].append(dst)
+        pq = []
+        heapq.heappush(pq, (0, points[0], points[0]))#(dist, from, to)
+        visited = set()
+        total_dist = 0
+        while len(visited) < len(points):
+            dist,v1,v2 = heapq.heappop(pq)
+            if tuple(v2) in visited:
+                continue
+            visited.add(tuple(v2))
+            total_dist = total_dist + dist
+
+            if len(visited) == len(points):
+                break
+
+
+            cur_node = v2
+            neighbors = adj[tuple(cur_node)]
+            for neighbor in neighbors:
+                if neighbor not in visited:
+                    dist = abs(cur_node[0]- neighbor[0]) + abs(cur_node[1]- neighbor[1])
+                    heapq.heappush(pq, (dist, tuple(cur_node), tuple(neighbor)))
+        return total_dist
+
             
-            if (src, dst) not in edge_count:
-                edge_count[(src, dst)] = 0
-            edge_count[(src, dst)] += 1
 
-        for key in my_map:
-            my_map[key].sort()
 
-        def dfs(cur_node, nodes_travelled):
-            nonlocal found_path, answer
-            if len(nodes_travelled) == len(tickets) + 1:
-                answer = nodes_travelled[:]
-                found_path = True
-                return True
 
-            if found_path:
-                return True
-
-            if cur_node in my_map:
-                for neighbor in my_map[cur_node]:
-                    if edge_count.get((cur_node, neighbor), 0) > 0:
-                        nodes_travelled.append(neighbor)
-                        edge_count[(cur_node, neighbor)] -= 1
-
-                        dfs(neighbor, nodes_travelled)
-                        if found_path:
-                            return True
-
-                        nodes_travelled.pop()
-                        edge_count[(cur_node, neighbor)] += 1
-
-            return False
-
-        dfs("JFK", ["JFK"])
-        return answer
+        
