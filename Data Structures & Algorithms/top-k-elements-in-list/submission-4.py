@@ -1,53 +1,12 @@
+import heapq
 class Solution:
     def topKFrequent(self, nums: List[int], k: int) -> List[int]:
-        my_map = {}
-        ans = []
-        #heap using heapq
-        q=[]
-        for num in nums:
-            if num not in my_map:
-                my_map[num] = 1
-            else:
-                my_map[num] += 1
-        
-        for key in my_map:
-            heapq.heappush(q, [-my_map[key],key])
-
-        while len(ans) < k:
-            if len(q) == 0 :
-                return[]
-            entry = heapq.heappop(q)
-            ans.append(entry[1])
-        
-        return ans
-        
-
-
-        # my_map = {}
-        # ans = []
-        # for num in nums:
-        #     if num not in my_map:
-        #         my_map[num] = 1
-        #     else:
-        #         my_map[num] += 1
-
-        # my_map2 = {}
-        # for num in my_map:
-        #     if my_map[num] in my_map2:
-        #         my_map2[my_map[num]].append(num)
-        #     else:
-        #         my_map2[my_map[num]] = [num]
-        # counts = []
-        # for num in my_map2:
-        #     counts.append(num)
-        
-        # counts.sort(reverse = True)
-        # total = 0
-        # ans = []
-        # for count in counts:
-        #     num_of_entries = my_map2[count]
-        #     for i in range(0,len(num_of_entries)):
-        #         total = total + 1
-        #         ans.append(num_of_entries[i])
-        #         if total >=k:
-        #             return ans
+        dict1 = Counter(nums)
+        res = []
+        for key, val in dict1.items():
+            res.append((-val, key))
+        heapq.heapify(res)
+        res1 = []
+        for i in range(k):
+            res1.append(heapq.heappop(res)[1])
+        return res1

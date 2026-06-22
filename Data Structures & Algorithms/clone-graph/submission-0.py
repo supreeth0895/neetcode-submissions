@@ -8,35 +8,16 @@ class Node:
 
 class Solution:
     def cloneGraph(self, node: Optional['Node']) -> Optional['Node']:
-        if node == None:
+        dict1 = {}
+        if not node:
             return None
-        my_visited_map = {}
-        q = []
-        def dfs(cur_node):
-            if cur_node.val in my_visited_map:
-                return
-            new_node = Node(cur_node.val, cur_node.neighbors)
-            my_visited_map[cur_node.val] = new_node
-            for neighbor in cur_node.neighbors:
-                dfs(neighbor)
-    
-        dfs(node)
-
-        for node_val in my_visited_map:
-            new_neighbor_list = []
-            for neighbor in my_visited_map[node_val].neighbors:
-                key = neighbor.val
-                new_neighbor_list.append(my_visited_map[key])
-            my_visited_map[node_val].neighbors = new_neighbor_list
-        
-        return my_visited_map[node.val]
-
-
-
-
-
-
-
-
-                
-        
+        def dfs(node):
+            if node in dict1:
+                return dict1[node]
+            new_node = Node(node.val)
+            dict1[node] = new_node
+            for neigh in node.neighbors:
+                new_neighbor = dfs(neigh)
+                new_node.neighbors.append(new_neighbor)
+            return new_node
+        return dfs(node)

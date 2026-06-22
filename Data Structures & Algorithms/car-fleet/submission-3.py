@@ -1,14 +1,21 @@
 class Solution:
     def carFleet(self, target: int, position: List[int], speed: List[int]) -> int:
-        pair = [(p, s) for p, s in zip(position, speed)]
-        pair.sort(reverse=True)
+        tuple_list = []
+        for i in range(len(speed)):
+            tuple_list.append((position[i], speed[i]))
+        tuple_list = sorted(tuple_list, reverse=True)
+        fleet = []
+        final_time = None
+        for pos, pace in tuple_list:
+            if not final_time:
+                final_time = (target-pos)/pace
+                fleet.append(final_time)
+            else:
+                fleet.append((target-pos)/pace)
+                if fleet[-1] <= fleet[-2]:
+                    fleet.pop()
+        return len(fleet)
 
-        fleets = 1
-        prevTime = (target - pair[0][0]) / pair[0][1]
-        for i in range(1, len(pair)):
-            currCar = pair[i]
-            currTime = (target - currCar[0]) / currCar[1]
-            if currTime > prevTime:
-                fleets += 1
-                prevTime = currTime
-        return fleets
+
+
+        

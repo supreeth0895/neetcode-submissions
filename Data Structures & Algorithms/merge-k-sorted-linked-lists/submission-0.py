@@ -5,52 +5,24 @@
 #         self.next = next
 
 class Solution:    
-
     def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
-        q = []
-        my_map = {}
-        
-        for head in lists:
-            cur = head
-            while cur != None:
-                key = cur.val
-                heapq.heappush(q, key)
-                if key not in my_map:
-                    my_map[key] = [cur]
-                else:
-                    my_map[key].append(cur)
-                cur = cur.next
-        
-        head = None
-        cur= head
-        
-        while q:
-            key = heapq.heappop(q)
-            nodes = my_map[key]
-            len_of_nodes= len(nodes)
-            node = nodes[len_of_nodes-1]
-            if len_of_nodes > 1:
-                nodes = nodes[:len_of_nodes -1]
-                my_map[key] = nodes
-            else:
-                my_map.pop(key)
-
-
-            node.next = None
-            #append to list
-            if head == None:
-                head = node
-                cur = head                
-            else:
-                cur.next = node
-                cur = cur.next
-        
-        return head
-
-
-                
-
-
-
-
+        mainHead = ListNode(0, None)
+        curr = mainHead
+        while any(lists):
+            minNode = None
+            indx = None
+            for i in range(len(lists)):
+                if lists[i]:
+                    if not minNode:
+                        minNode = lists[i]
+                        indx = i
+                    else:
+                        if lists[i].val <minNode.val:
+                            minNode = lists[i]
+                            indx = i
+            lists[indx] = lists[indx].next
+            curr.next = minNode
+            curr = minNode
+            print(minNode.val)
+        return mainHead.next
         

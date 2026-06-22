@@ -1,18 +1,9 @@
 class Solution:
     def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
-        my_map = {}
-        ans = []
-        for st in strs:
-            sorted_st = "".join(sorted(st))
-            if sorted_st in my_map:
-                my_map[sorted_st].append(st)
-            else:
-                my_map[sorted_st] = [st]
-        
-        for key in my_map:
-            ans.append(my_map[key])
-        
-        return ans
-
-
-
+        res = defaultdict(list)
+        for str1 in strs:
+            count = [0]*26
+            for elem in str1:
+                count[ord(elem)-ord('a')]+=1
+            res[tuple(count)].append(str1)
+        return list(res.values())

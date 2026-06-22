@@ -1,22 +1,14 @@
 class Solution:
     def carFleet(self, target: int, position: List[int], speed: List[int]) -> int:
-        sorted_tuple_list = []
-        for i in range(0, len(position)):
-            sorted_tuple_list.append(tuple([position[i],speed[i]]))
+        tuple_list = []
+        for i in range(len(speed)):
+            tuple_list.append((position[i], speed[i]))
+        tuple_list = sorted(tuple_list, reverse=True)
+        fleet = []
+        for pos, pace in tuple_list:
+            fleet.append((target-pos)/pace)
+            if len(fleet)>=2 and fleet[-1] <= fleet[-2]:
+                fleet.pop()
+        return len(fleet)
+
         
-        sorted_tuple_list.sort(reverse = True)
-
-        st = []
-
-        for entry in sorted_tuple_list:
-            remaining_miles = target - entry[0]
-            vehicle_speed = entry[1]
-            remaining_time = remaining_miles/vehicle_speed
-            if len(st) == 0:
-                st.append(remaining_time)
-            elif remaining_time <= st[len(st)-1]:
-                continue
-            else:
-                st.append(remaining_time)
-        return len(st)
-                

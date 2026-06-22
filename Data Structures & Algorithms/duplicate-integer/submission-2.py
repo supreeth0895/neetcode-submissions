@@ -1,12 +1,8 @@
-#SUPREETH
 class Solution:
     def hasDuplicate(self, nums: List[int]) -> bool:
-        my_set = set()
-        for num in nums:
-            if num in my_set:
+        visited = set()
+        for elem in nums:
+            if elem in visited:
                 return True
-            my_set.add(num)
+            visited.add(elem)
         return False
-        
-
-        

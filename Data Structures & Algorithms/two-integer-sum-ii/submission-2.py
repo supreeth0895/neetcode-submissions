@@ -1,23 +1,11 @@
 class Solution:
     def twoSum(self, numbers: List[int], target: int) -> List[int]:
-        left = 0
-        right = len(numbers)-1
-
-        sum = numbers[left] + numbers[right]
-
-        while left<right:
-            if sum == target:
-                return [left+1, right+1]
-            if sum > target :
-                right = right -1
+        i, j =0, len(numbers)-1
+        while i < j:
+            if numbers[i]+numbers[j] > target:
+                j-=1
+            elif numbers[i]+numbers[j] < target:
+                i+=1
             else:
-                left =left+1
-            sum = numbers[left] + numbers[right]
-            
-            
-        
-
-        return []
-            
-
+                return [i+1, j+1]
         
